@@ -1,0 +1,24 @@
+def calcular_billetes(monto):
+    if monto % 20 != 0:
+        print("Error: el monto debe ser múltiplo de 20.")
+        return None
+
+    billetes_200 = monto // 200
+    monto = monto % 200
+
+    billetes_100 = monto // 100
+    monto = monto % 100
+
+    billetes_50 = monto // 50
+    monto = monto % 50
+
+    billetes_20 = monto // 20
+    monto = monto % 20
+
+    print(f"{billetes_200}x Q200, {billetes_100}x Q100, {billetes_50}x Q50, {billetes_20}x Q20")
+
+
+# Prueba
+calcular_billetes(370)   # dará error porque no es múltiplo de 20
+calcular_billetes(370) if 370 % 20 == 0 else print("370 no es múltiplo de 20")
+calcular_billetes(360)
