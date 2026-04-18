@@ -1,0 +1,47 @@
+def crear_diccionario():
+    return {
+        "nombre": "Eleazar",
+        "edad": 20,
+        "ciudad": "Chiquimulilla",
+        "lenguaje_favorito": "Python"
+    }
+
+
+def agregar_universidad(diccionario):
+    diccionario["universidad"] = "USPG"
+
+
+def modificar_edad(diccionario):
+    nueva_edad = 21
+    if nueva_edad > 0:
+        diccionario["edad"] = nueva_edad
+    else:
+        print("Edad no válida.")
+
+
+def imprimir_datos(diccionario):
+    for clave, valor in diccionario.items():
+        print(f"{clave}: {valor}")
+
+
+def verificar_email(diccionario):
+    if "email" in diccionario:
+        print("La clave 'email' sí existe.")
+    else:
+        print("La clave 'email' no existe.")
+
+
+def obtener_telefono(diccionario):
+    print("Teléfono:", diccionario.get("telefono", "41797262"))
+
+
+def main():
+    persona = crear_diccionario()
+    agregar_universidad(persona)
+    modificar_edad(persona)
+    imprimir_datos(persona)
+    verificar_email(persona)
+    obtener_telefono(persona)
+
+
+main()
