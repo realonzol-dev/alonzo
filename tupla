@@ -1,0 +1,39 @@
+# 1. Crear una tupla con las coordenadas de tu ciudad
+coordenadas = (14.3050, -90.7850)  # ejemplo: Chiquimulilla, Santa Rosa
+
+# 2. Desempaquetar en variables lat, lon
+lat, lon = coordenadas
+
+print("Latitud:", lat)
+print("Longitud:", lon)
+
+
+# 3. Crear una función que retorne (min, max, promedio) de una lista de números
+def calcular_estadisticas(numeros):
+    minimo = min(numeros)
+    maximo = max(numeros)
+    promedio = sum(numeros) / len(numeros)
+    return (minimo, maximo, promedio)
+
+
+lista = [10, 20, 30, 40, 50]
+resultado = calcular_estadisticas(lista)
+
+print("Resultado:", resultado)
+
+
+# 4. Usar tuplas como claves de un diccionario
+distancias = {
+    ("Guate", "Escuintla"): 58,
+    ("Guate", "Antigua"): 45
+}
+
+print("Distancia Guate - Escuintla:", distancias[("Guate", "Escuintla")])
+print("Distancia Guate - Antigua:", distancias[("Guate", "Antigua")])
+
+
+# 5. Intentar modificar un elemento de la tupla
+# coordenadas[0] = 15.0000
+
+# Esto da error porque las tuplas son inmutables.
+# Eso significa que sus elementos no se pueden cambiar después de haber sido creadas.
