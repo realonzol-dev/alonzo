@@ -1,0 +1,207 @@
+import json
+
+inventario = []
+
+
+def validar_nombre(nombre):
+    return nombre.strip() != ""
+
+
+def buscar_producto_por_nombre(nombre):
+    for producto in inventario:
+        if producto.get("nombre", "").lower() == nombre.lower():
+            return producto
+    return None
+
+
+def agregar_producto():
+    print("\n--- Agregar producto ---")
+    nombre = input("Nombre del producto: ").strip()
+
+    if not validar_nombre(nombre):
+        print("Error: el nombre no puede estar vacío.")
+        return
+
+    if buscar_producto_por_nombre(nombre):
+        print("Ese producto ya existe en el inventario.")
+        return
+
+    try:
+        precio = float(input("Precio: "))
+        cantidad = int(input("Cantidad: "))
+    except ValueError:
+        print("Error: precio o cantidad inválidos.")
+        return
+
+    categoria = input("Categoría: ").strip()
+
+    if precio < 0 or cantidad < 0:
+        print("Error: precio y cantidad no pueden ser negativos.")
+        return
+
+    producto = {
+        "nombre": nombre,
+        "precio": precio,
+        "cantidad": cantidad,
+        "categoria": categoria
+    }
+
+    inventario.append(producto)
+    print("Producto agregado correctamente.")
+
+
+def buscar_productos():
+    print("\n--- Buscar productos ---")
+    print("1. Buscar por nombre")
+    print("2. Buscar por categoría")
+    opcion = input("Seleccione una opción: ").strip()
+
+    if opcion == "1":
+        nombre = input("Ingrese el nombre del producto: ").strip()
+        producto = buscar_producto_por_nombre(nombre)
+
+        if producto:
+            print("\nProducto encontrado:")
+            print(f"Nombre: {producto.get('nombre')}")
+            print(f"Precio: Q{producto.get('precio')}")
+            print(f"Cantidad: {producto.get('cantidad')}")
+            print(f"Categoría: {producto.get('categoria')}")
+        else:
+            print("Producto no encontrado.")
+
+    elif opcion == "2":
+        categoria = input("Ingrese la categoría: ").strip().lower()
+        encontrados = []
+
+        for producto in inventario:
+            if producto.get("categoria", "").lower() == categoria:
+                encontrados.append(producto)
+
+        if encontrados:
+            print("\nProductos encontrados:")
+            for producto in encontrados:
+                print(f"- {producto.get('nombre')} | Q{producto.get('precio')} | Stock: {producto.get('cantidad')}")
+        else:
+            print("No se encontraron productos en esa categoría.")
+
+    else:
+        print("Opción no válida.")
+
+
+def actualizar_cantidad():
+    print("\n--- Actualizar cantidad ---")
+    nombre = input("Ingrese el nombre del producto: ").strip()
+    producto = buscar_producto_por_nombre(nombre)
+
+    if not producto:
+        print("Producto no encontrado.")
+        return
+
+    print("1. Registrar venta")
+    print("2. Registrar restock")
+    opcion = input("Seleccione una opción: ").strip()
+
+    try:
+        cantidad = int(input("Ingrese la cantidad: "))
+    except ValueError:
+        print("Error: debes ingresar un número entero.")
+        return
+
+    if cantidad <= 0:
+        print("Error: la cantidad debe ser mayor que 0.")
+        return
+
+    if opcion == "1":
+        if producto["cantidad"] >= cantidad:
+            producto["cantidad"] -= cantidad
+            print("Venta registrada correctamente.")
+        else:
+            print("Error: no hay suficiente stock para realizar la venta.")
+
+    elif opcion == "2":
+        producto["cantidad"] += cantidad
+        print("Restock registrado correctamente.")
+
+    else:
+        print("Opción no válida.")
+
+
+def calcular_valor_total():
+    print("\n--- Valor total del inventario ---")
+    total = 0
+
+    for producto in inventario:
+        total += producto.get("precio", 0) * producto.get("cantidad", 0)
+
+    print(f"Valor total del inventario: Q{total:.2f}")
+
+
+def mostrar_stock_bajo():
+    print("\n--- Productos con stock bajo (<5) ---")
+    hay_stock_bajo = False
+
+    for producto in inventario:
+        if producto.get("cantidad", 0) < 5:
+            print(f"- {producto.get('nombre')} | Stock: {producto.get('cantidad')}")
+            hay_stock_bajo = True
+
+    if not hay_stock_bajo:
+        print("No hay productos con stock bajo.")
+
+
+def exportar_json():
+    print("\n--- Inventario en formato JSON ---")
+    inventario_json = json.dumps(inventario, indent=4, ensure_ascii=False)
+    print(inventario_json)
+
+
+def mostrar_todos():
+    print("\n--- Todos los productos ---")
+    if len(inventario) == 0:
+        print("El inventario está vacío.")
+        return
+
+    for producto in inventario:
+        print(f"Nombre: {producto.get('nombre')}")
+        print(f"Precio: Q{producto.get('precio')}")
+        print(f"Cantidad: {producto.get('cantidad')}")
+        print(f"Categoría: {producto.get('categoria')}")
+        print("-------------------------")
+
+
+def menu():
+    while True:
+        print("\n===== SISTEMA DE INVENTARIO =====")
+        print("1. Agregar producto")
+        print("2. Buscar por nombre o categoría")
+        print("3. Actualizar cantidad (venta/restock)")
+        print("4. Calcular valor total del inventario")
+        print("5. Mostrar productos con stock bajo (<5)")
+        print("6. Exportar inventario como JSON string")
+        print("7. Mostrar todos los productos")
+        print("8. Salir")
+
+        opcion = input("Seleccione una opción: ").strip()
+
+        if opcion == "1":
+            agregar_producto()
+        elif opcion == "2":
+            buscar_productos()
+        elif opcion == "3":
+            actualizar_cantidad()
+        elif opcion == "4":
+            calcular_valor_total()
+        elif opcion == "5":
+            mostrar_stock_bajo()
+        elif opcion == "6":
+            exportar_json()
+        elif opcion == "7":
+            mostrar_todos()
+        elif opcion == "8":
+            print("Saliendo del sistema...")
+            break
+        else:
+            print("Opción no válida. Intente otra vez.")
+
+
+menu()
