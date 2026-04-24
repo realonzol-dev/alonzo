@@ -1,0 +1,116 @@
+# Agenda de contactos
+# Combina: diccionarios + listas + funciones + input/output + while
+
+agenda = []
+
+
+def validar_nombre(nombre):
+    return nombre.strip() != ""
+
+
+def agregar_contacto():
+    print("\n--- Agregar contacto ---")
+    nombre = input("Nombre: ").strip()
+
+    if not validar_nombre(nombre):
+        print("Error: el nombre no puede estar vacío.")
+        return
+
+    telefono = input("Teléfono: ").strip()
+    email = input("Email: ").strip()
+
+    contacto = {
+        "nombre": nombre,
+        "telefono": telefono,
+        "email": email
+    }
+
+    agenda.append(contacto)
+    print("Contacto agregado correctamente.")
+
+
+def buscar_contacto():
+    print("\n--- Buscar contacto ---")
+    nombre_buscar = input("Ingrese el nombre a buscar: ").strip()
+
+    if not validar_nombre(nombre_buscar):
+        print("Error: debes escribir un nombre.")
+        return
+
+    encontrado = False
+
+    for contacto in agenda:
+        if contacto.get("nombre", "").lower() == nombre_buscar.lower():
+            print("\nContacto encontrado:")
+            print("Nombre:", contacto.get("nombre", "No disponible"))
+            print("Teléfono:", contacto.get("telefono", "No disponible"))
+            print("Email:", contacto.get("email", "No disponible"))
+            encontrado = True
+            break
+
+    if not encontrado:
+        print("Contacto no encontrado.")
+
+
+def mostrar_contactos():
+    print("\n--- Lista de contactos ---")
+
+    if len(agenda) == 0:
+        print("No hay contactos guardados.")
+        return
+
+    for i, contacto in enumerate(agenda, start=1):
+        print(f"\nContacto {i}:")
+        print("Nombre:", contacto.get("nombre", "No disponible"))
+        print("Teléfono:", contacto.get("telefono", "No disponible"))
+        print("Email:", contacto.get("email", "No disponible"))
+
+
+def eliminar_contacto():
+    print("\n--- Eliminar contacto ---")
+    nombre_eliminar = input("Ingrese el nombre del contacto a eliminar: ").strip()
+
+    if not validar_nombre(nombre_eliminar):
+        print("Error: debes escribir un nombre.")
+        return
+
+    for contacto in agenda:
+        if contacto.get("nombre", "").lower() == nombre_eliminar.lower():
+            agenda.remove(contacto)
+            print("Contacto eliminado correctamente.")
+            return
+
+    print("Contacto no encontrado.")
+
+
+def mostrar_menu():
+    print("\n===== AGENDA TELEFÓNICA =====")
+    print("1. Agregar contacto")
+    print("2. Buscar contacto por nombre")
+    print("3. Mostrar todos los contactos")
+    print("4. Eliminar contacto")
+    print("5. Salir")
+
+
+def main():
+    while True:
+        mostrar_menu()
+        opcion = input("Seleccione una opción: ").strip()
+
+        if opcion == "1":
+            agregar_contacto()
+        elif opcion == "2":
+            buscar_contacto()
+        elif opcion == "3":
+            mostrar_contactos()
+        elif opcion == "4":
+            eliminar_contacto()
+        elif opcion == "5":
+            print("Saliendo del programa...")
+            break
+        else:
+            print("Opción no válida. Intente de nuevo.")
+
+
+# Ejecutar programa
+main()
